@@ -158,13 +158,13 @@ namespace BMeshLib
         {
             if (loop != null)
             {
-                var it = loop;
+                var iteratorLoop = loop;
                 do
                 {
-                    yield return it.face;
+                    yield return iteratorLoop.face;
                     
-                    it = it.radial_next;
-                } while (it != loop);
+                    iteratorLoop = iteratorLoop.radial_next;
+                } while (iteratorLoop != loop);
             }
         }
 
