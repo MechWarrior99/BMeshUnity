@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using UnityEngine;
 
@@ -135,8 +136,8 @@ namespace BMeshLib.Tests
             Debug.Assert(mesh.edges.Count == 5, "edge count");
             Debug.Assert(mesh.faces.Count == 2, "face count");
 
-            Debug.Assert(v0.NeighborFaces().Count == 1, "v0 has one neighbor face (found count: " + v0.NeighborFaces().Count + ")");
-            Debug.Assert(v1.NeighborFaces().Count == 2, "v1 has two neighbor face (found count: " + v1.NeighborFaces().Count + ")");
+            Debug.Assert(v0.GetFaces().Count() == 1, "v0 has one neighbor face (found count: " + v0.GetFaces().Count() + ")");
+            Debug.Assert(v1.GetFaces().Count() == 2, "v1 has two neighbor face (found count: " + v1.GetFaces().Count() + ")");
 
             foreach (Loop l in mesh.loops)
             {
@@ -144,11 +145,11 @@ namespace BMeshLib.Tests
                 Debug.Assert(l.prev != null, "loop has a next loop");
             }
 
-            Debug.Assert(f0.Loop(v0) != null, "loop with vertex v0 does not exist in face f0");
-            Debug.Assert(f0.Loop(v0).vert == v0, "loop with vertex v0 has v0 as corner");
-            Debug.Assert(f0.Loop(v1) != null, "loop with vertex v1 does not exist in face f0");
-            Debug.Assert(f0.Loop(v1).vert == v1, "loop with vertex v1 has v1 as corner");
-            Debug.Assert(f0.Loop(v3) == null, "loop with vertex v3 does not exist in face f0");
+            Debug.Assert(f0.FindLoop(v0) != null, "loop with vertex v0 does not exist in face f0");
+            Debug.Assert(f0.FindLoop(v0).vert == v0, "loop with vertex v0 has v0 as corner");
+            Debug.Assert(f0.FindLoop(v1) != null, "loop with vertex v1 does not exist in face f0");
+            Debug.Assert(f0.FindLoop(v1).vert == v1, "loop with vertex v1 has v1 as corner");
+            Debug.Assert(f0.FindLoop(v3) == null, "loop with vertex v3 does not exist in face f0");
 
             Edge e0 = null;
             foreach (Edge e in mesh.edges)
@@ -192,8 +193,8 @@ namespace BMeshLib.Tests
             Debug.Assert(mesh.edges.Count == 2, "edge count");
             Debug.Assert(mesh.faces.Count == 2, "face count");
 
-            Debug.Assert(v0.NeighborFaces().Count == 1, "v0 has one neighbor face (found count: " + v0.NeighborFaces().Count + ")");
-            Debug.Assert(v1.NeighborFaces().Count == 2, "v1 has two neighbor face (found count: " + v1.NeighborFaces().Count + ")");
+            Debug.Assert(v0.GetFaces().Count() == 1, "v0 has one neighbor face (found count: " + v0.GetFaces().Count() + ")");
+            Debug.Assert(v1.GetFaces().Count() == 2, "v1 has two neighbor face (found count: " + v1.GetFaces().Count() + ")");
 
             Debug.Log("TestBMesh TestTwoVertexFaces passed.");
 

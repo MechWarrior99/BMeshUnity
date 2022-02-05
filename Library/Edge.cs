@@ -86,7 +86,7 @@ namespace BMeshLib
         /// } while(edge != firstEdge);
         /// </code>
         /// </example>
-        /// <seealso cref="Vertex.NeighborEdges"/>
+        /// <seealso cref="Vertex.GetEdges"/>
         /// <param name="v">The <see cref="Vertex"/> to get the next <see cref="Edge"/> of.</param>
         /// <returns>
         /// The next <see cref="Edge"/> in the linked list of edges that uses <paramref name="v"/>, 
@@ -128,7 +128,7 @@ namespace BMeshLib
         /// } while(edge != firstEdge);
         /// </code>
         /// </example>
-        /// <seealso cref="Vertex.NeighborEdges"/>
+        /// <seealso cref="Vertex.GetEdges"/>
         /// <param name="v">The <see cref="Vertex"/> to get the previous <see cref="Edge"/> of.</param>
         /// <returns>
         /// The previous <see cref="Edge"/> in the linked list of edges that uses <paramref name="v"/>, 
@@ -154,19 +154,18 @@ namespace BMeshLib
         /// Returns all <see cref="Face"/>s that use the <see cref="Edge"/> as a side.
         /// </summary>
         /// <returns>All <see cref="Face"/>s that use the <see cref="Edge"/> as one of it's sides.</returns>
-        public List<Face> NeighborFaces()
+        public IEnumerable<Face> GetFaces()
         {
-            var faces = new List<Face>();
-            if (this.loop != null)
+            if (loop != null)
             {
-                var it = this.loop;
+                var it = loop;
                 do
                 {
-                    faces.Add(it.face);
+                    yield return it.face;
+                    
                     it = it.radial_next;
-                } while (it != this.loop);
+                } while (it != loop);
             }
-            return faces;
         }
 
         /// <summary>

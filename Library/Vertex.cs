@@ -52,19 +52,17 @@ namespace BMeshLib
         /// All <see cref="Edge"/>s that reach the <see cref="Vertex"/>. Uses
         /// <see cref="Edge.Next(Vertex)"/> from <see cref="edge"/> until it reaches <see cref="edge"/> again.
         /// </returns>
-        public List<Edge> NeighborEdges()
+        public IEnumerable<Edge> GetEdges()
         {
-            var edges = new List<Edge>();
-            if (this.edge != null)
+            if (edge != null)
             {
-                Edge it = this.edge;
+                Edge iteratorEdge = edge;
                 do
                 {
-                    edges.Add(it);
-                    it = it.Next(this);
-                } while (it != edge);
+                    yield return iteratorEdge;
+                    iteratorEdge = iteratorEdge.Next(this);
+                } while (iteratorEdge != edge);
             }
-            return edges;
         }
 
         /// <summary>
@@ -73,22 +71,22 @@ namespace BMeshLib
         /// <returns>
         /// All <see cref="Face"/>s that use the <see cref="Vertex"/> as one of it's corners.
         /// </returns>
-        public List<Face> NeighborFaces()
+        public IEnumerable<Face> GetFaces()
         {
             var faces = new HashSet<Face>();
             if (edge != null)
             {
-                Edge it = edge;
+                Edge iteratorEdge = edge;
                 do
                 {
-                    foreach (var f in it.NeighborFaces())
+                    foreach (var f in iteratorEdge.GetFaces())
                     {
-                        faces.Add(f);
+                        if (faces.Add(f))
+                            yield return f;
                     }
-                    it = it.Next(this);
-                } while (it != edge);
+                    iteratorEdge = iteratorEdge.Next(this);
+                } while (iteratorEdge != edge);
             }
-            return faces.ToList();
         }
     }
 }

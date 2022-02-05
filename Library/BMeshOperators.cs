@@ -181,7 +181,7 @@ namespace BMeshLib
             foreach (Face f in mesh.faces)
             {
                 Vector3 c = f.Center();
-                List<Vertex> verts = f.NeighborVertices();
+                List<Vertex> verts = new List<Vertex>(f.GetVertices());
                 if (verts.Count != 4) continue;
                 // (r for "radius")
                 Vector3 r0 = verts[0].point - c;
@@ -266,7 +266,7 @@ namespace BMeshLib
             foreach (Face f in mesh.faces)
             {
                 Vector3 c = f.Center();
-                List<Vertex> verts = f.NeighborVertices();
+                List<Vertex> verts = new List<Vertex>(f.GetVertices());
                 if (verts.Count != 4) continue;
                 // (r for "radius")
                 Vector3 r0 = verts[0].point - c;
@@ -375,7 +375,7 @@ namespace BMeshLib
             }
             foreach (Face f in other.faces)
             {
-                var neighbors = f.NeighborVertices();
+                var neighbors = new List<Vertex>(f.GetVertices());
                 var newNeighbors = new Vertex[neighbors.Count];
                 int j = 0;
                 foreach (var v in neighbors)

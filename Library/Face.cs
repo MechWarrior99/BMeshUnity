@@ -25,42 +25,40 @@ namespace BMeshLib
         /// <returns>
         /// The vertices that comprise corners of the <see cref="Face"/>.
         /// </returns>
-        public List<Vertex> NeighborVertices()
+        public IEnumerable<Vertex> GetVertices()
         {
-            var verts = new List<Vertex>();
-            if (this.loop != null)
+            if (loop != null)
             {
-                Loop it = this.loop;
+                Loop iteratorLoop = loop;
                 do
                 {
-                    verts.Add(it.vert);
-                    it = it.next;
-                } while (it != this.loop);
+                    yield return iteratorLoop.vert;
+                    iteratorLoop = iteratorLoop.next;
+                } while (iteratorLoop != loop);
             }
-            return verts;
         }
 
         /// <summary>
         /// Returns the <see cref="BMeshLib.Loop"/> in the <see cref="Face"/>
-        /// whose <see cref="Loop.vert"/> matches the specified <see cref="Vertex"/>.
+        /// whose <see cref="FindLoop.vert"/> matches the specified <see cref="Vertex"/>.
         /// </summary>
         /// <param name="v">The <see cref="Vertex"/> to get the <see cref="BMeshLib.Loop"/> of.</param>
         /// <returns>
         /// The <see cref="BMeshLib.Loop"/> of the <see cref="Face"/>
-        /// whose <see cref="Loop.vert"/> matches <paramref name="v"/>
+        /// whose <see cref="FindLoop.vert"/> matches <paramref name="v"/>
         /// if it is part of the <see cref="Face"/>; otherwise, <c>null</c>.
         /// </returns>
-        public Loop Loop(Vertex v)
+        public Loop FindLoop(Vertex v)
         {
-            if (this.loop != null)
+            if (loop != null)
             {
-                Loop it = this.loop;
+                Loop iteratorLoop = loop;
                 do
                 {
-                    Debug.Assert(it != null);
-                    if (it.vert == v) return it;
-                    it = it.next;
-                } while (it != this.loop);
+                    Debug.Assert(iteratorLoop != null);
+                    if (iteratorLoop.vert == v) return iteratorLoop;
+                    iteratorLoop = iteratorLoop.next;
+                } while (iteratorLoop != loop);
             }
             return null;
         }
@@ -69,23 +67,21 @@ namespace BMeshLib
         /// Returns the ordered <see cref="Edge"/>s around the <see cref="Face"/>.
         /// </summary>
         /// <returns>The <see cref="Edge"/>s that make up the <see cref="Face"/>.</returns>
-        /// /// <remarks>
-        /// Guarantied to match the order of <see cref="NeighborVertices"/>.
+        /// <remarks>
+        /// Guarantied to match the order of <see cref="GetVertices"/>.
         /// So that <c>edge[0] = vert[0]-->vert[1], edge[1] = vert[1]-->vert[2], etc.</c>
         /// </remarks>
-        public List<Edge> NeighborEdges()
+        public IEnumerable<Edge> GetEdges()
         {
-            var edges = new List<Edge>();
-            if (this.loop != null)
+            if (loop != null)
             {
-                Loop it = this.loop;
+                Loop iteratorLoop = loop;
                 do
                 {
-                    edges.Add(it.edge);
-                    it = it.next;
-                } while (it != this.loop);
+                    yield return iteratorLoop.edge;
+                    iteratorLoop = iteratorLoop.next;
+                } while (iteratorLoop != loop);
             }
-            return edges;
         }
 
         /// <summary>
@@ -96,7 +92,7 @@ namespace BMeshLib
         {
             Vector3 p = Vector3.zero;
             float sum = 0;
-            foreach (var v in NeighborVertices())
+            foreach (var v in GetVertices())
             {
                 p += v.point;
                 sum += 1;
